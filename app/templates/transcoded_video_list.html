@@ -6,7 +6,15 @@
 {% block content %}
 <div class="p-6 bg-gray-100 w-full">
     <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
-        <h2 class="text-2xl font-bold mb-4">Transcoded Videos</h2>
+        <!-- Header with button on the right -->
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-2xl font-bold">Transcoded Videos</h2>
+            <a href="{% url 'transcode' %}" 
+               class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+               + Add New
+            </a>
+        </div>
+
         <table class="min-w-full table-auto border-collapse border border-gray-300">
             <thead>
                 <tr class="bg-gray-200">
@@ -40,7 +48,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="8" class="border px-4 py-2 text-center">No videos found.</td>
+                    <td colspan="9" class="border px-4 py-2 text-center">No videos found.</td>
                 </tr>
                 {% endfor %}
             </tbody>
