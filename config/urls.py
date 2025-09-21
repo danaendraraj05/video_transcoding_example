@@ -20,10 +20,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 from app.views.ping import trigger_ping_task
+from app.views.transcode_video import transcode_video, transcoded_video_list
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ping-task/", trigger_ping_task, name="ping-task"),
+    path('transcode/', transcode_video, name='transcode'),
+    path('transcoded-videos/', transcoded_video_list, name='transcoded_video_list'),
 ]
 
 if settings.DEBUG:

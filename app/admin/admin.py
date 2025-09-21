@@ -4,6 +4,7 @@ from app.models import (
     BackgroundTaskEvent,
     BackgroundTaskFile,
 )
+from app.models.transcode import TranscodedVideo
 
 class BackgroundTaskEventInline(admin.TabularInline):
     model = BackgroundTaskEvent
@@ -28,3 +29,10 @@ class BackgroundTaskEventAdmin(admin.ModelAdmin):
 @admin.register(BackgroundTaskFile)
 class BackgroundTaskFileAdmin(admin.ModelAdmin):
     list_display = ("task", "file", "description")
+
+# ✅ Register TranscodedVideo
+@admin.register(TranscodedVideo)
+class TranscodedVideoAdmin(admin.ModelAdmin):
+    list_display = ("id", "codec", "profile", "created_at", "transcoding_time", "storage_used")
+    search_fields = ("codec", "profile")
+    list_filter = ("codec", "profile", "created_at")
