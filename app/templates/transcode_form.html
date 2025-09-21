@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Video Transcoder{% endblock %}
+
+{% block content %}
+<div class="p-6 bg-gray-100">
+  <div class="max-w-xl mx-auto bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-2xl font-bold mb-4">Video Transcoder</h2>
+    
+    <!-- Form -->
+    <form method="POST" enctype="multipart/form-data" action="{% url 'transcode' %}" class="space-y-4">
+      {% csrf_token %}
+
+      <!-- Input field for video -->
+      <div class="flex flex-col">
+        <label for="{{ form.original_video.id_for_label }}" class="font-semibold mb-1">Upload Video</label>
+        {{ form.original_video }}
+      </div>
+
+      <!-- Codec field -->
+      <div class="flex flex-col">
+        <label for="{{ form.codec.id_for_label }}" class="font-semibold mb-1">Codec</label>
+        {{ form.codec }}
+      </div>
+
+      <!-- Resolution field -->
+      <div id="resolution-container" class="flex flex-col">
+        <label for="{{ form.resolutions.id_for_label }}" class="font-semibold mb-1">Resolutions</label>
+        {{ form.resolutions }}
+      </div>
+
+      <!-- Profile field -->
+      <div class="flex flex-col" id="profile-container">
+        <label for="{{ form.profile.id_for_label }}" class="font-semibold mb-1">Profile</label>
+        {{ form.profile }}
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit" 
+              class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        Transcode
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- Hide profile when VP9 is selected -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const codecSelect = document.getElementById('{{ form.codec.id_for_label }}');
+  const profileContainer = document.getElementById('profile-container');
+
+  function toggleProfile() {
+    if (codecSelect.value === 'vp9') {
+      profileContainer.style.display = 'none';
+    } else {
+      profileContainer.style.display = 'block';
+    }
+  }
+
+  toggleProfile();
+  codecSelect.addEventListener('change', toggleProfile);
+});
+</script>
+
+<link rel="stylesheet" href="{% static 'preline/dist/preline.css' %}">
+<script src="{% static 'preline/dist/preline.js' %}"></script>
+{% endblock %}

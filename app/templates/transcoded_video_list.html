@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Transcoded Videos{% endblock %}
+
+{% block content %}
+<div class="p-6 bg-gray-100 w-full">
+    <div class="max-w-7xl mx-auto bg-white p-6 rounded shadow">
+        <h2 class="text-2xl font-bold mb-4">Transcoded Videos</h2>
+        <table class="min-w-full table-auto border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-200">
+                    <th class="border px-4 py-2">ID</th>
+                    <th class="border px-4 py-2">Codec</th>
+                    <th class="border px-4 py-2">Profile</th>
+                    <th class="border px-4 py-2">Resolutions</th>
+                    <th class="border px-4 py-2">Folder Sizes (MB)</th>
+                    <th class="border px-4 py-2">Created At</th>
+                    <th class="border px-4 py-2">Transcoding Time (s)</th>
+                    <th class="border px-4 py-2">Total Storage (MB)</th>
+                    <th class="border px-4 py-2">Source File (MB)</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for video in videos %}
+                <tr>
+                    <td class="border px-4 py-2">{{ video.id }}</td>
+                    <td class="border px-4 py-2">{{ video.codec }}</td>
+                    <td class="border px-4 py-2">{{ video.profile }}</td>
+                    <td class="border px-4 py-2">{{ video.resolutions|join:", " }}</td>
+                    <td class="border px-4 py-2">
+                        {% for res, size in video.size_per_resolution.items %}
+                            {{ res }}: {{ size }} MB<br>
+                        {% endfor %}
+                    </td>
+                    <td class="border px-4 py-2">{{ video.created_at }}</td>
+                    <td class="border px-4 py-2">{{ video.transcoding_time|default:"-"|floatformat:2 }}</td>
+                    <td class="border px-4 py-2">{{ video.storage_used|default:"-"|floatformat:2 }}</td>
+                    <td class="border px-4 py-2">{{ video.source_size|default:"-"|floatformat:2 }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="border px-4 py-2 text-center">No videos found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
